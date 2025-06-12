@@ -69,6 +69,11 @@ tmp/
 sessions/
 debug/
 
+# Planning and internal docs
+CLAUDE.md
+TODO.md
+INSTALL.md
+
 # Database
 *.db
 *.sqlite3
