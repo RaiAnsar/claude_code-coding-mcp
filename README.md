@@ -49,17 +49,43 @@ When you ask Claude to consult other AIs through MCP servers, those AIs have **n
 
 ## 🚀 Quick Start
 
+### Prerequisites
+- Python 3.8+
+- Docker & Docker Compose
+- Claude Code (with MCP support)
+
 ### Installation
 
+1. **Clone the repository:**
 ```bash
-# Clone the repository
 git clone https://github.com/RaiAnsar/claude_code-coding-mcp.git
 cd claude_code-coding-mcp
-
-# Run the setup script
-chmod +x setup.sh
-./setup.sh
 ```
+
+2. **Run the setup script:**
+```bash
+chmod +x scripts/setup.sh
+./scripts/setup.sh
+```
+
+3. **Configure API keys:**
+```bash
+cp .env.example .env
+# Edit .env and add your AI API keys:
+# - GEMINI_API_KEY=your-key-here
+# - GROK_API_KEY=your-key-here
+# - OPENAI_API_KEY=your-key-here
+# - DEEPSEEK_API_KEY=your-key-here (optional)
+```
+
+4. **Add to Claude Code:**
+```bash
+claude mcp add enhanced-context "python3 $(pwd)/src/main.py --stdio" --scope user
+```
+
+5. **Restart Claude Code and test:**
+- Use `/mcp` to verify enhanced-context is listed
+- Try: "Claude, ask Gemini to help analyze this code"
 
 ### Basic Usage
 
