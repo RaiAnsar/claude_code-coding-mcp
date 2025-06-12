@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from core.context_manager import ContextManager
 from core.mcp_protocol import MCPProtocolHandler
 from core.session_manager import SessionManager
+from core.ai_router import AIContextRouter
 from services.debug_service import DebugService
 from services.analysis_service import AnalysisService
 from utils.logger import setup_logger
@@ -66,10 +67,14 @@ async def lifespan(app: FastAPI):
     app.state.debug_service = DebugService()
     app.state.analysis_service = AnalysisService()
     app.state.mcp_handler = MCPProtocolHandler()
+    app.state.ai_router = AIContextRouter()
     
     # Initialize connections
     await app.state.context_manager.initialize()
     await app.state.session_manager.initialize()
+    await app.state.ai_router.initialize()
+    await app.state.debug_service.initialize()
+    await app.state.analysis_service.initialize()
     
     logger.info("MCP Server started successfully")
     
