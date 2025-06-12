@@ -80,9 +80,8 @@ AI_CLIENTS = {}
 
 if CREDENTIALS.get("gemini"):
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=CREDENTIALS["gemini"])
-        AI_CLIENTS["gemini"] = genai.GenerativeModel("gemini-2.0-flash")
+        from google import genai
+        AI_CLIENTS["gemini"] = genai.Client(api_key=CREDENTIALS["gemini"])
     except Exception as e:
         print(f"Gemini init failed: {e}", file=sys.stderr)
 
@@ -119,9 +118,11 @@ def call_ai_with_context(ai_name: str, prompt: str, temperature: float = 0.7) ->
             else:
                 full_prompt = prompt
             
-            response = AI_CLIENTS["gemini"].generate_content(
-                full_prompt,
-                generation_config={"temperature": temperature}
+            model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-pro-preview-06-05")
+            response = AI_CLIENTS["gemini"].models.generate_content(
+                model=model_name,
+                contents=full_prompt,
+                config={"temperature": temperature}
             )
             result = response.text
             
@@ -138,7 +139,10 @@ def call_ai_with_context(ai_name: str, prompt: str, temperature: float = 0.7) ->
             # Add current prompt
             messages.append({"role": "user", "content": prompt})
             
-            model = "grok-3" if ai_name == "grok" else "gpt-4o-mini"
+            if ai_name == "grok":
+                model = os.getenv("GROK_MODEL", "grok-3")
+            else:
+                model = os.getenv("OPENAI_MODEL", "gpt-4o")
             response = AI_CLIENTS[ai_name].chat.completions.create(
                 model=model,
                 messages=messages,

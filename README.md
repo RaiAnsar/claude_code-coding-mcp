@@ -85,6 +85,24 @@ GROK_API_KEY=your-grok-key-here
 OPENAI_API_KEY=your-openai-key-here
 ```
 
+### Customizing AI Models
+
+You can customize which models to use for each AI service in your `.env` file:
+
+```bash
+# Default models (latest versions)
+GEMINI_MODEL=gemini-2.5-pro-preview-06-05
+GROK_MODEL=grok-3
+OPENAI_MODEL=gpt-4o
+
+# You can change to other available models:
+# GEMINI_MODEL=gemini-2.0-flash-001
+# OPENAI_MODEL=gpt-4o
+# GROK_MODEL=grok-2
+```
+
+Simply edit your `.env` file to use different models based on your needs (cost, performance, capabilities).
+
 ## 📖 How to Use
 
 After installation and restarting Claude Code:
