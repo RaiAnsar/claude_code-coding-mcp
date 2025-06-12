@@ -69,7 +69,7 @@ nano ~/.claude-mcp-servers/enhanced-context/.env
 Add your API keys (you don't need all of them):
 ```env
 # AI API Keys - Add only the ones you have
-GEMINI_API_KEY=your_gemini_key_here      # Free from https://aistudio.google.com/apikey
+GEMINI_API_KEY=your_gemini_key_here      # From https://aistudio.google.com/apikey
 GROK_API_KEY=your_grok_key_here          # From https://console.x.ai/
 OPENAI_API_KEY=your_openai_key_here      # From https://platform.openai.com/api-keys
 DEEPSEEK_API_KEY=your_deepseek_key_here  # From https://platform.deepseek.com/
