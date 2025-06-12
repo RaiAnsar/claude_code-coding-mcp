@@ -1,244 +1,294 @@
 # Enhanced MCP Server - AI Context Bridge 🚀
 
-**Give OTHER AIs persistent memory and context awareness** when working with Claude Code. This isn't about Claude's memory (that already works) - it's about making Gemini, Grok, ChatGPT, and DeepSeek remember your conversations and project context!
+**Give OTHER AIs persistent memory and context awareness** when working with Claude Code. This server enables Gemini, Grok, ChatGPT, and DeepSeek to remember conversations and maintain project context across sessions!
 
-## 🎯 The Real Problem We're Solving
+## 🎯 What This Solves
 
-When you ask Claude to consult other AIs through MCP servers, those AIs have **no memory** of previous interactions. Every call is a fresh start. This server changes that!
+When Claude talks to other AIs through MCP servers, those AIs have **no memory** of previous interactions. This server gives them persistent memory, just like Claude has!
 
 ### Before This Server:
-> **You:** "Claude, ask Gemini to continue debugging that function from earlier"  
-> **Gemini:** "What function? I have no previous context..."
+```
+You: "Claude, ask Gemini to continue debugging that function from earlier"
+Gemini: "What function? I have no previous context..."
+```
 
 ### With This Server:
-> **You:** "Claude, ask Gemini to continue debugging that function from earlier"  
-> **Gemini:** "I see the function we were working on. The issue is on line 42..."
+```
+You: "Claude, ask Gemini to continue debugging that function from earlier"
+Gemini: "I see the function we were working on. The issue is on line 42..."
+```
+
+## 🚀 Quick Start (One-Click Setup)
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/claude_code-coding-mcp.git
+cd claude_code-coding-mcp
+
+# Run the one-click setup
+./one_click_setup.sh
+```
+
+The setup script will:
+1. Check all dependencies
+2. Let you choose installation type (Quick/Full/Docker)
+3. Guide you through API key configuration
+4. Add the server to Claude Code automatically
+5. Start any required services
+
+## 📋 Installation Options
+
+### Option 1: Quick Install (Simplest)
+No databases required - uses file-based storage
+```bash
+./install_mcp_ai_collab.sh
+```
+
+### Option 2: Full Install (Recommended)
+Uses Redis + PostgreSQL for better performance
+```bash
+./install_full.sh
+```
+
+### Option 3: Docker Install (Everything Containerized)
+```bash
+docker-compose up -d
+```
+
+### Option 4: Manual Installation
+
+1. **Prerequisites:**
+   - Python 3.8+
+   - pip3
+   - Claude Code CLI (`claude` command)
+   - (Optional) Docker for databases
+
+2. **Clone and Setup:**
+   ```bash
+   git clone https://github.com/yourusername/claude_code-coding-mcp.git
+   cd claude_code-coding-mcp
+   
+   # Copy environment template
+   cp .env.example .env
+   
+   # Edit .env and add your API keys
+   nano .env
+   ```
+
+3. **Install Dependencies:**
+   ```bash
+   pip3 install google-generativeai openai
+   
+   # For full version also install:
+   pip3 install redis asyncpg
+   ```
+
+4. **Add to Claude Code:**
+   ```bash
+   # For quick version:
+   claude mcp add mcp-ai-collab "python3 $(pwd)/src/mcp_server_clean.py" --scope user
+   
+   # For full version:
+   claude mcp add mcp-ai-collab "python3 $(pwd)/src/mcp_server_full.py" --scope user
+   ```
+
+5. **Start Databases (Full Version Only):**
+   ```bash
+   docker-compose up -d postgres redis
+   ```
+
+## 🔑 API Key Configuration
+
+You'll need API keys for the AIs you want to use. Get them from:
+
+- **Gemini**: https://aistudio.google.com/apikey
+- **Grok**: https://console.x.ai/
+- **OpenAI**: https://platform.openai.com/api-keys
+- **DeepSeek**: https://platform.deepseek.com/
+
+Add your keys to the `.env` file:
+```env
+GEMINI_API_KEY=your-actual-gemini-key
+GROK_API_KEY=your-actual-grok-key
+OPENAI_API_KEY=your-actual-openai-key
+DEEPSEEK_API_KEY=your-actual-deepseek-key  # Optional
+```
+
+**Important:** Never commit your `.env` file with real API keys!
 
 ## 🌟 Features
 
-### 🧠 Multi-AI Context Persistence
-- **Gemini remembers** - Previous debugging sessions, code reviews, suggestions
-- **Grok maintains context** - Project understanding across conversations
-- **ChatGPT continues** - Where it left off in previous analyses
-- **DeepSeek recalls** - Complex reasoning chains from earlier discussions
-- **Shared project awareness** - All AIs understand your project structure
+### Core Features
+- **Persistent AI Memory** - Each AI remembers all past conversations
+- **Project-Based Context** - Separate memory for each project/directory
+- **Cross-AI Collaboration** - AIs can build on each other's work
+- **Automatic Context Management** - No manual context handling needed
 
-### 🐛 Stateful AI Debugging
-- **Continuous debugging sessions** - Grok remembers breakpoints from last session
-- **Cross-AI debugging** - "ChatGPT, continue where Gemini left off"
-- **Persistent variable states** - All AIs can inspect the same runtime state
-- **Collaborative debugging** - Multiple AIs work on the same debug context
+### Available AI Tools
 
-### 🔍 Persistent Code Analysis
-- **Cumulative insights** - Each AI builds on previous analyses
-- **Cross-AI reviews** - "Gemini, review the changes ChatGPT suggested"
-- **Historical tracking** - See how code evolved through AI suggestions
-- **Context-aware refactoring** - AIs remember why changes were made
+#### Basic Queries
+- `ask_gemini` - Ask Google's Gemini a question
+- `ask_grok` - Ask X.AI's Grok a question
+- `ask_openai` - Ask OpenAI's ChatGPT a question
+- `ask_all_ais` - Ask all AIs the same question and compare
 
-### 🏗️ Stateful Project Management
-- **Project memory** - All AIs remember your project structure
-- **Continuous workflows** - "DeepSeek, continue the API design from yesterday"
-- **Shared understanding** - Every AI knows what others have worked on
-- **Progress tracking** - AIs can see what's been completed
+#### Code Review & Analysis
+- `gemini_code_review` - Get code review from Gemini
+- `grok_code_review` - Get code review from Grok
+- `openai_code_review` - Get code review from ChatGPT
 
-### 🧪 Collaborative AI Testing
-- **Test continuity** - "Grok, run the tests Gemini generated"
-- **Shared test contexts** - All AIs see the same test results
-- **Progressive coverage** - Each AI improves on others' test cases
-- **Memory of failures** - AIs remember what broke and why
+#### Deep Thinking & Analysis
+- `gemini_think_deep` - Extended reasoning with Gemini
+- `grok_think_deep` - Extended reasoning with Grok
+- `openai_think_deep` - Extended reasoning with ChatGPT
 
-## 🚀 Quick Start
+#### Brainstorming
+- `gemini_brainstorm` - Creative solutions with Gemini
+- `grok_brainstorm` - Creative solutions with Grok
+- `openai_brainstorm` - Creative solutions with ChatGPT
 
-### Prerequisites
-- Python 3.8+
-- Docker & Docker Compose
-- Claude Code (with MCP support)
+#### Debugging
+- `gemini_debug` - Debug help from Gemini
+- `grok_debug` - Debug help from Grok
+- `openai_debug` - Debug help from ChatGPT
 
-### Installation
+#### Architecture & Design
+- `gemini_architecture` - Architecture advice from Gemini
+- `grok_architecture` - Architecture advice from Grok
+- `openai_architecture` - Architecture advice from ChatGPT
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/RaiAnsar/claude_code-coding-mcp.git
-cd claude_code-coding-mcp
-```
+#### Collaboration Tools
+- `ai_debate` - Have two AIs debate a topic
+- `collaborative_solve` - Multiple AIs work together
+- `ai_consensus` - Get consensus from all AIs
 
-2. **Run the setup script:**
-```bash
-chmod +x scripts/setup.sh
-./scripts/setup.sh
-```
-
-3. **Configure API keys:**
-```bash
-cp .env.example .env
-# Edit .env and add your AI API keys:
-# - GEMINI_API_KEY=your-key-here
-# - GROK_API_KEY=your-key-here
-# - OPENAI_API_KEY=your-key-here
-# - DEEPSEEK_API_KEY=your-key-here (optional)
-```
-
-4. **Add to Claude Code:**
-```bash
-claude mcp add enhanced-context "python3 $(pwd)/src/main.py --stdio" --scope user
-```
-
-5. **Restart Claude Code and test:**
-- Use `/mcp` to verify enhanced-context is listed
-- Try: "Claude, ask Gemini to help analyze this code"
+## 💡 Usage Examples
 
 ### Basic Usage
+```
+You: "Claude, ask Gemini to analyze this function"
+You: "Now ask Grok to review Gemini's suggestions"
+You: "Have ChatGPT explain why they disagree"
+```
 
-Once installed, the magic happens when AIs can remember:
+### Continuing Previous Work
+```
+You: "Claude, ask Gemini to continue the refactoring from yesterday"
+You: "Show me what Grok suggested last time about the API design"
+```
 
-> **You:** "Claude, ask Gemini to debug this function"
-> 
-> **Gemini (via Claude):** "I'll start debugging... Found 3 issues."
-> 
-> **Next Day:**
-> 
-> **You:** "Claude, have Gemini continue the debugging from yesterday"
-> 
-> **Gemini (via Claude):** "I see we fixed 2 issues yesterday. Let me work on the third one involving the async callback..."
-
-Another example:
-
-> **You:** "Claude, get ChatGPT's opinion on this architecture"
-> 
-> **ChatGPT (via Claude):** "Based on our previous discussions about scalability, I recommend..."
+### Multi-AI Collaboration
+```
+You: "Claude, ask all AIs how to optimize this algorithm"
+You: "Have Gemini and Grok debate the best approach"
+You: "Get consensus from all AIs on the architecture"
+```
 
 ## 🏗️ Architecture
 
+### Quick Version (File-Based)
 ```
-┌─────────────────────────────────────────┐
-│            You talk to Claude            │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────┴───────────────────────┐
-│            Claude Code                   │
-│    (Already has perfect memory)          │
-└─────────────────┬───────────────────────┘
-                  │ MCP Protocol
-┌─────────────────┴───────────────────────┐
-│      Enhanced MCP Context Server         │
-│   🧠 Gives OTHER AIs Memory Too! 🧠     │
-├─────────┬─────────┬─────────┬───────────┤
-│ Gemini  │  Grok   │ChatGPT  │ DeepSeek  │
-│ Context │ Context │Context  │ Context   │
-├─────────┴─────────┴─────────┴───────────┤
-│     Shared Redis + PostgreSQL Storage    │
-└─────────────────────────────────────────┘
+Claude Code ←→ MCP Protocol ←→ Enhanced MCP Server
+                                      ↓
+                              AI Context Manager
+                                      ↓
+                              File-Based Storage
+                               (JSON per project)
 ```
 
-## 💡 Why Do Other AIs Need This?
-
-**Claude Code already maintains context perfectly** - you can have long conversations and Claude remembers everything. But when Claude talks to OTHER AIs through MCP servers:
-
-1. **Each request is isolated** - Gemini doesn't know what it said 5 minutes ago
-2. **No project awareness** - ChatGPT can't see the file structure it analyzed yesterday  
-3. **Lost debugging state** - Grok forgets the breakpoints it set
-4. **Repeated work** - DeepSeek re-analyzes code it already reviewed
-
-This server solves ALL of that by giving each AI its own persistent memory!
-
-## 🛠️ Technology Stack
-
-- **Backend**: Python (FastAPI) + Node.js (Real-time features)
-- **Database**: PostgreSQL (Persistent storage) + Redis (Caching)
-- **Protocols**: JSON-RPC (MCP) + WebSocket (Real-time)
-- **Languages**: Python, JavaScript/TypeScript support
-- **Tools**: Docker, pytest, ESLint, and more
-
-## 📋 Implementation Status
-
-### ✅ Completed (Phase 1)
-- **Core MCP server structure** - FastAPI with WebSocket support
-- **Project-based session management** - Each AI has separate context per project
-- **Context persistence system** - Hybrid Redis + PostgreSQL storage
-- **MCP protocol handler** - Intercepts and injects AI context
-- **Multi-AI router** - Routes to Gemini/Grok/ChatGPT/DeepSeek
-- **/clear command sync** - Clears AI contexts with Claude
-
-### 🚧 In Progress
-- **Database setup automation** - Docker compose configuration
-- **AI service integration** - Connecting to actual AI APIs
-- **Testing infrastructure** - Unit and integration tests
-
-### 📅 Next Steps
-- Complete AI service connections
-- Add debugging capabilities
-- Implement code analysis tools
-- Create web dashboard
-
-See [TODO.md](TODO.md) for full roadmap.
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
-
-```bash
-# Install dependencies
-npm install
-pip install -r requirements.txt
-
-# Set up environment
-cp .env.example .env
-# Edit .env with your configuration
-
-# Start development server
-docker-compose up -d
-npm run dev
+### Full Version (Database-Backed)
 ```
-
-## 📚 Documentation
-
-- [API Documentation](docs/API.md)
-- [Plugin Development](docs/PLUGINS.md)
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [User Guide](docs/USER_GUIDE.md)
+Claude Code ←→ MCP Protocol ←→ Enhanced MCP Server
+                                      ↓
+                              AI Context Manager
+                                   ↓     ↓
+                              Redis   PostgreSQL
+                            (Cache)  (Persistent)
+```
 
 ## 🔧 Configuration
 
-Create a `.env` file with:
+### Environment Variables
+See `.env.example` for all configuration options:
 
 ```env
-# Database
-POSTGRES_URL=postgresql://user:pass@localhost:5432/mcp_dev
-REDIS_URL=redis://localhost:6379
+# Database Configuration (Full Version)
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+REDIS_HOST=localhost
+REDIS_PORT=6379
 
-# MCP Server
-MCP_PORT=3000
-MCP_HOST=localhost
+# AI Configuration
+GEMINI_MODEL=gemini-2.0-flash
+GROK_MODEL=grok-3
+OPENAI_MODEL=gpt-4o-mini
 
 # Features
 ENABLE_DEBUGGING=true
-ENABLE_ANALYSIS=true
-ENABLE_PROFILING=true
+ENABLE_CODE_ANALYSIS=true
 ```
 
-## 🚦 System Requirements
+### Docker Configuration
+The `docker-compose.yml` includes:
+- PostgreSQL with persistent volume
+- Redis with append-only file
+- Health checks for all services
+- Automatic database initialization
 
-- Python 3.8+
-- Node.js 16+
-- Docker & Docker Compose
-- 4GB RAM minimum
-- 10GB free disk space
+## 🐛 Troubleshooting
 
-## 📊 Performance Benchmarks
+### Common Issues
 
-- **Context Retrieval**: <100ms
-- **Breakpoint Hit**: <50ms
-- **Code Analysis**: <500ms for 10k LOC
-- **Project Scaffolding**: <5 seconds
+1. **"MCP server not found in Claude Code"**
+   - Restart Claude Code after installation
+   - Run `claude mcp list` to verify installation
+
+2. **"API key not working"**
+   - Check the `.env` file has correct keys
+   - Ensure no extra spaces or quotes around keys
+   - Verify keys are active on provider dashboards
+
+3. **"Database connection failed"**
+   - For Docker: `docker-compose ps` to check status
+   - For local: Ensure PostgreSQL/Redis are running
+   - Check firewall/port settings
+
+4. **"No context being saved"**
+   - Verify you're in a git repository or project folder
+   - Check file permissions in installation directory
+   - Look at logs in `~/.mcp-ai-collab/logs/`
+
+### Debug Mode
+Enable debug logging in `.env`:
+```env
+LOG_LEVEL=DEBUG
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## 📊 Performance
+
+- **Context Retrieval**: <100ms average
+- **AI Response Time**: Depends on provider (1-5s typical)
+- **Memory Usage**: ~50MB base + context size
+- **Storage**: ~1MB per 100 conversations
 
 ## 🔒 Security
 
-- JWT authentication for all API endpoints
-- Sandboxed code execution environment
-- Input validation and sanitization
-- Rate limiting and DDoS protection
+- **API Keys**: Never stored in code, only in `.env`
+- **Context Isolation**: Each project has separate context
+- **No External Sharing**: All data stays local
+- **Encrypted Storage**: Optional encryption for contexts
 
 ## 📝 License
 
@@ -246,31 +296,15 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-- Claude Code team for the amazing platform
-- MCP protocol creators
-- All contributors and testers
-
-## 🐛 Known Issues
-
-- WebSocket scaling needs optimization
-- Cross-platform CLI compatibility in progress
-- Large codebase performance being improved
+- Claude Code team for the MCP protocol
+- All AI providers for their APIs
+- Contributors and early testers
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/RaiAnsar/claude_code-coding-mcp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/RaiAnsar/claude_code-coding-mcp/discussions)
-- **Email**: support@example.com
-
-## 🎉 The Result
-
-With this server, you get a true **AI development team** where:
-- Every AI remembers past conversations
-- All AIs share project understanding
-- Debugging sessions continue across days
-- Code reviews build on each other
-- No more repeating context!
+- **Issues**: [GitHub Issues](https://github.com/yourusername/claude_code-coding-mcp/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/claude_code-coding-mcp/discussions)
 
 ---
 
-**Made with ❤️ for developers who want ALL their AIs to have memory, not just Claude**
+**Made with ❤️ for developers who want ALL their AIs to have memory, not just Claude!**
