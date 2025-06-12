@@ -1,20 +1,23 @@
 # Claude Code Enhanced MCP Server - Project Context
 
 ## 🎯 Project Overview
-This is an enhanced MCP (Model Context Protocol) server designed to supercharge Claude Code with advanced development tools and persistent context. The goal is to transform Claude Code from a conversational AI into a full-fledged development companion.
+This is an enhanced MCP (Model Context Protocol) server that gives OTHER AIs (Gemini, Grok, ChatGPT, DeepSeek) the same persistent memory that Claude Code already has. The goal is to create a true AI development team where every AI remembers past interactions.
 
 ## 🔑 Key Problems We're Solving
-1. **Context Loss**: Current MCP implementations lose conversation context between API calls
-2. **Limited Developer Tools**: Lack of debugging, profiling, and analysis capabilities
-3. **No Project Continuity**: Can't maintain project state across sessions
-4. **Manual Integration**: Difficult to integrate with existing development workflows
+1. **Other AIs Have No Memory**: When Claude calls Gemini/Grok/ChatGPT through MCP, they start fresh every time
+2. **Lost Context Between Calls**: Each AI request is completely isolated from previous ones
+3. **No Shared Project Understanding**: AIs can't build on each other's work
+4. **Repeated Analysis**: Same code gets re-analyzed because AIs don't remember
+5. **Broken Debugging Sessions**: Can't continue debugging across conversations
 
 ## 🏗️ Architecture Decisions
 
 ### Context Persistence Strategy
+- **Per-AI Context**: Each AI (Gemini, Grok, etc.) gets its own context namespace
 - **Hybrid Storage**: Redis for active sessions (fast access) + PostgreSQL for long-term storage
-- **Session Management**: UUID-based sessions with automatic context loading
-- **Conversation Threading**: Support for multiple conversation branches
+- **Cross-AI Sharing**: Shared project context that all AIs can access
+- **Session Continuity**: AI sessions persist across Claude conversations
+- **Context Injection**: Automatically inject relevant history when calling any AI
 
 ### Technology Stack
 - **Backend**: Python (FastAPI) for AI integration + Node.js for real-time features
